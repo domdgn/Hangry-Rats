@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - PickUp
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Pickups
   - Water
   - UI
   - 
