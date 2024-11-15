@@ -100,9 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7.5
-  jumpForce: 7.5
-  fallMultiplier: 2.5
-  lowJumpMultiplier: 2
+  jumpForce: 10
+  fallMultiplier: 2
+  lowJumpMultiplier: 1.5
 --- !u!50 &1987277690144010645
 Rigidbody2D:
   serializedVersion: 4
