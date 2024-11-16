@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier;
     public float lowJumpMultiplier;
 
+    private Transform spawnPoint;
+
     [Header("Ground Detection Settings")]
     public Transform groundCheck; // Assign an empty GameObject positioned slightly below the player
     public float groundCheckRadius = 0.2f; // Adjust the radius as needed
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        Respawn();
     }
 
     private void Update()
@@ -32,6 +36,21 @@ public class PlayerController : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded)
         {
             Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)) 
+        {
+            Respawn();
+        }
+    }
+
+    public void Respawn()
+    {
+        GameObject spawnObj = GameObject.FindWithTag("SpawnPoint");
+        if (spawnObj != null)
+        {
+            spawnPoint = spawnObj.transform;
+            transform.position = spawnPoint.position;
         }
     }
 
@@ -77,5 +96,21 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             PickUpController.Instance.CollectPickup();
         }
+
+        //else if (other.CompareTag("RespawnTrigger"))
+        //{
+        //    Debug.Log("respawn trigger hit");
+        //    GameObject spawnObj = GameObject.FindWithTag("SpawnPoint");
+        //    if (spawnObj != null)
+        //    {
+        //        spawnPoint = spawnObj.transform;
+        //        transform.position = spawnPoint.position;
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning("No spawn point found!");
+        //        transform.position = Vector2.zero;
+        //    }
+        //}
     }
 }

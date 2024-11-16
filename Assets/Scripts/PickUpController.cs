@@ -5,9 +5,6 @@ public class PickUpController : MonoBehaviour
 {
     public static PickUpController Instance { get; private set; }
 
-    [Header("UI References")]
-    [SerializeField] private TMP_Text pickupText;
-
     private int pickUpCount;
 
     private void Awake()
@@ -26,21 +23,31 @@ public class PickUpController : MonoBehaviour
 
     private void Start()
     {
-        pickUpCount = 0;
-        UpdatePickUpCountText();
+        ResetPickups();
     }
 
     public void CollectPickup()
     {
         pickUpCount++;
-        UpdatePickUpCountText();
+        UpdateUI();
     }
 
-    private void UpdatePickUpCountText()
+    public int GetPickUpCount()
     {
-        string displayText = $"Pick Ups: {pickUpCount}";
+        return pickUpCount;
+    }
 
-        // Update TextMeshPro if available
-        pickupText.text = displayText;
+    public void ResetPickups()
+    {
+        pickUpCount = 0;
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdatePickupCount(pickUpCount);
+        }
     }
 }
