@@ -81,8 +81,8 @@ public class DoorController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && isUnlocked)
         {
-            PickUpController.Instance.ResetPickups();
             SceneManager.LoadScene(nextLevelName);
+            PickUpController.Instance.ResetPickups();
         }
     }
 }

@@ -19,6 +19,8 @@ public class RatEnemyController : MonoBehaviour
   /* 
    TODO: 
     - Add tolerance so the rat doesnt freak out when x = same as player
+    - Prevent infinite hits in 1 second
+    - STATE SYSTEM so rats can be docile when player not carrying food
     - Make platforming of rat work better (perhaps with A* pathfinding)
     - Rat & button interactions
     - Rat only jumps when within radius of player perhaps - prevents all rats in scene jumping whenever the player does
@@ -35,8 +37,8 @@ public class RatEnemyController : MonoBehaviour
         CheckGround();
         MoveTowardsPlayer();
 
-        // Jump if player is above us
-        if (isGrounded && player.position.y > transform.position.y + 2f)
+        // Jump if player is above rat
+        if (isGrounded && player.position.y > transform.position.y + 3f)
         {
             Jump();
         }
