@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class RatController : MonoBehaviour
@@ -20,7 +22,12 @@ public class RatController : MonoBehaviour
 
     [Header("Movement References")]
     [SerializeField] float jumpForce;
+    [SerializeField] int jumpCooldown;
+    bool canJump;
+    bool allowJump;
     bool isFacingRight = true;
+
+    Animator animator;
 
     public enum RatStates
     {
@@ -35,6 +42,7 @@ public class RatController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         ratState = RatStates.Patrolling;
         currentPoint = PointB.transform;
 
@@ -47,6 +55,7 @@ public class RatController : MonoBehaviour
         CheckGrounded();
         CheckPlayerDistance();
         StateUpdater();
+        AnimationHandler();
 
         if (ratState == RatStates.Patrolling)
         {
@@ -56,6 +65,18 @@ public class RatController : MonoBehaviour
         if (ratState == RatStates.Tracking)
         {
             TrackPlayer();
+        }
+    }
+
+    void AnimationHandler()
+    {
+        if (rb.velocity != Vector2.zero)
+        {
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
         }
     }
 
@@ -158,7 +179,7 @@ public class RatController : MonoBehaviour
 
             // Add upward force to prevent being pushed into the ground
             float pushForce = 10f;
-            float upwardForce = 5f;
+            float upwardForce = 0f;
 
             // Ensure the rat is always pushed upward and horizontally, never downward
             pushDirection.y = Mathf.Abs(pushDirection.y);
@@ -166,14 +187,6 @@ public class RatController : MonoBehaviour
             rb.AddForce(new Vector2(pushDirection.x * pushForce, upwardForce), ForceMode2D.Impulse);
             ratState = RatStates.Idle;
             Invoke("ResetState", 1f);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isGrounded = false;
         }
     }
 
@@ -188,10 +201,18 @@ public class RatController : MonoBehaviour
             groundLayer
         );
 
-        if (!headCheck.collider && isGrounded)
+        if (!headCheck.collider && isGrounded && canJump)
         {
+            StartCoroutine(JumpReset());
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+    }
+
+    IEnumerator JumpReset()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(jumpCooldown);
+        canJump = true;
     }
 
     private void ResetState()

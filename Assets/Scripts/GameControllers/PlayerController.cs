@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded;
     private float horizontalInput;
+    private bool isFacingRight = true;
 
     private void Start()
     {
@@ -41,6 +42,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) 
         {
             Respawn();
+        }
+
+        FlipHandling();
+    }
+
+    private void FlipHandling()
+    {
+        if (horizontalInput > 0)
+        {
+            gameObject.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        }
+        else if (horizontalInput < 0)
+        {
+            gameObject.transform.localScale = new Vector3(-0.75f, 0.75f, 0.75f);
         }
     }
 
