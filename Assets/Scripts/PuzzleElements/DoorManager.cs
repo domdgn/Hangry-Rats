@@ -5,7 +5,7 @@ public class DoorManager : MonoBehaviour
 {
     public static DoorManager Instance { get; private set; }
 
-    private Dictionary<int, List<Door>> doorGroups = new Dictionary<int, List<Door>>();
+    private Dictionary<int, List<DoorScript>> doorGroups = new Dictionary<int, List<DoorScript>>();
 
     private void Awake()
     {
@@ -19,11 +19,11 @@ public class DoorManager : MonoBehaviour
         }
     }
 
-    public void RegisterDoor(Door door, int doorID)
+    public void RegisterDoor(DoorScript door, int doorID)
     {
         if (!doorGroups.ContainsKey(doorID))
         {
-            doorGroups[doorID] = new List<Door>();
+            doorGroups[doorID] = new List<DoorScript>();
         }
         doorGroups[doorID].Add(door);
     }
@@ -32,7 +32,7 @@ public class DoorManager : MonoBehaviour
     {
         if (doorGroups.ContainsKey(buttonID))
         {
-            foreach (Door door in doorGroups[buttonID])
+            foreach (DoorScript door in doorGroups[buttonID])
             {
                 door.SetDoorState(open);
             }

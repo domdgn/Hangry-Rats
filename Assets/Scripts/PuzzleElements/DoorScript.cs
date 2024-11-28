@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class DoorScript : MonoBehaviour
 {
     [SerializeField] private int doorID; // ID to link door to specific button(s)
     [SerializeField] private float openSpeed = 2f;
@@ -20,7 +20,7 @@ public class Door : MonoBehaviour
     private void Update()
     {
         // Smoothly move the door to its target position
-        Vector3 targetPosition = isOpen ? openPosition : closedPosition;
+        Vector3 targetPosition = isOpen ? openPosition : closedPosition; // ? is if isOpen is true and : is if isOpen is false
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * openSpeed);
     }
 
