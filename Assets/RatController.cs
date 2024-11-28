@@ -46,15 +46,30 @@ public class RatController : MonoBehaviour
     {
         CheckGrounded();
         CheckPlayerDistance();
+        StateUpdater();
 
-        switch (ratState)
+        if (ratState == RatStates.Patrolling)
         {
-            case RatStates.Patrolling:
-                Patrol();
-                break;
-            case RatStates.Tracking:
-                TrackPlayer();
-                break;
+            Patrol();
+        }
+
+        if (ratState == RatStates.Tracking)
+        {
+            TrackPlayer();
+        }
+    }
+
+    void StateUpdater()
+    {
+        float distance = Vector2.Distance(transform.position, player.transform.position);
+
+        if (distance <= trackingRadius)
+        {
+            ratState = RatStates.Tracking;
+        }
+        else
+        {
+            ratState = RatStates.Patrolling;
         }
     }
 
@@ -151,6 +166,14 @@ public class RatController : MonoBehaviour
             rb.AddForce(new Vector2(pushDirection.x * pushForce, upwardForce), ForceMode2D.Impulse);
             ratState = RatStates.Idle;
             Invoke("ResetState", 1f);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isGrounded = false;
         }
     }
 
