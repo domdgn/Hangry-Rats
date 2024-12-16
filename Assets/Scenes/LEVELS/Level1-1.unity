@@ -3288,6 +3288,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4121346640196657201, guid: 32bd53f48c2263940b1a3292dcbc3f90, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 5312604046860695358, guid: 32bd53f48c2263940b1a3292dcbc3f90, type: 3}
       propertyPath: m_Name
       value: PuzzleDoor
